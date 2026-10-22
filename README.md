@@ -108,6 +108,6 @@ docs/         Project report and Postman collection
 tests/        Playwright browser checks
 ```
 
-## GitHub handoff
+## Repository
 
-Create a new GitHub repository, then from this project folder run `git init`, `git add .`, `git commit -m "Build CampusConnect event booking app"`, add the repository as `origin`, and push the `main` branch. Keep `.env` out of version control.
+The public repository is [nandanvinayan/campusconnect-event-booking](https://github.com/nandanvinayan/campusconnect-event-booking). Clone it with `git clone https://github.com/nandanvinayan/campusconnect-event-booking.git`, then follow the local setup steps above. Keep `.env` out of version control.

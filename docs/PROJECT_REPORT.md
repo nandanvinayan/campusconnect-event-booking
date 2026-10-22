@@ -8,7 +8,7 @@
 **Semester / Section:** [Semester and section]  
 **Subject:** Full Stack Technologies  
 **Assessment:** AAT-1  
-**Repository:** [Add GitHub repository URL]
+**Repository:** [nandanvinayan/campusconnect-event-booking](https://github.com/nandanvinayan/campusconnect-event-booking)
 
 ---
 
@@ -176,7 +176,7 @@ The scripts are located in `tests/campusconnect.spec.js` and `docs/CampusConnect
 
 The Playwright scripts save full-page student and organizer dashboard screenshots under `docs/screenshots/` when executed. The repository includes the Express server, Mongoose models, routes, browser interface, demo seed script, API collection, browser checks, and this report.
 
-**GitHub repository:** [Add repository URL after publishing]
+**GitHub repository:** [nandanvinayan/campusconnect-event-booking](https://github.com/nandanvinayan/campusconnect-event-booking)
 
 ## 9. Challenges and Resolutions
 

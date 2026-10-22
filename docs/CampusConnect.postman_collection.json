@@ -1,0 +1,52 @@
+{
+  "info": {
+    "name": "CampusConnect API",
+    "description": "Core authentication, event discovery, ticket booking, and organizer workflows.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "studentToken", "value": "" },
+    { "key": "organizerToken", "value": "" },
+    { "key": "eventId", "value": "" },
+    { "key": "registrationId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/health" }
+    },
+    {
+      "name": "Student login",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('login succeeds', function () { pm.response.to.have.status(200); });", "pm.collectionVariables.set('studentToken', pm.response.json().token);"] } }],
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"student@campusconnect.demo\",\n  \"password\": \"demo1234\"\n}" }, "url": "{{baseUrl}}/api/auth/login" }
+    },
+    {
+      "name": "List upcoming events",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('events are returned', function () { pm.response.to.have.status(200); });", "const events = pm.response.json().events;", "if (events && events.length) pm.collectionVariables.set('eventId', events[0]._id);"] } }],
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/events" }
+    },
+    {
+      "name": "Reserve a seat",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('ticket is created or already active', function () { pm.expect([201, 409]).to.include(pm.response.code); });", "if (pm.response.code === 201) pm.collectionVariables.set('registrationId', pm.response.json().registration._id);"] } }],
+      "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": "{{baseUrl}}/api/registrations/event/{{eventId}}" }
+    },
+    {
+      "name": "Student tickets",
+      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{studentToken}}" }], "url": "{{baseUrl}}/api/registrations/mine" }
+    },
+    {
+      "name": "Organizer login",
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('login succeeds', function () { pm.response.to.have.status(200); });", "pm.collectionVariables.set('organizerToken', pm.response.json().token);"] } }],
+      "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"organizer@campusconnect.demo\",\n  \"password\": \"demo1234\"\n}" }, "url": "{{baseUrl}}/api/auth/login" }
+    },
+    {
+      "name": "Organizer events",
+      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{organizerToken}}" }], "url": "{{baseUrl}}/api/events/mine" }
+    },
+    {
+      "name": "View guest list",
+      "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{organizerToken}}" }], "url": "{{baseUrl}}/api/registrations/event/{{eventId}}" }
+    }
+  ]
+}
